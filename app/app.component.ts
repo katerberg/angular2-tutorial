@@ -1,22 +1,6 @@
 import {Component} from '@angular/core';
-
-export class Hero {
-  id: number;
-  name: string;
-}
-
-const HEROES: Hero[] = [
-  {id: 11, name: 'Wolverine'},
-  {id: 12, name: 'Professor X'},
-  {id: 13, name: 'Cyclops'},
-  {id: 14, name: 'Storm'},
-  {id: 15, name: 'Rogue'},
-  {id: 16, name: 'Gambit'},
-  {id: 17, name: 'Inara Serra'},
-  {id: 18, name: 'River Tamm'},
-  {id: 19, name: 'Doctor Strange'},
-  {id: 20, name: 'Supergirl'}
-];
+import {Hero} from './hero';
+import {HeroService} from './hero.service';
 
 @Component({
   selector: 'my-app',
@@ -29,15 +13,8 @@ const HEROES: Hero[] = [
       [class.selected]="hero === selectedHero">
       <span class="badge">{{hero.id}}</span> {{hero.name}}
     </li>
-  </ul>
-  <div *ngIf="selectedHero">
-    <h2>{{selectedHero.name}} details!</h2>
-    <div><label>id: </label>{{selectedHero.id}}</div>
-    <div>
-      <label>name: </label>
-      <input [(ngModel)]="selectedHero.name" placeholder="name"/>
-    </div>
-  </div>
+  <ul>
+  <my-hero-detail [hero]="selectedHero"></my-hero-detail>
   `,
   styles: [`
     .selected {
@@ -87,12 +64,14 @@ const HEROES: Hero[] = [
       margin-right: .8em;
       border-radius: 4px 0 0 4px;
     }
-    `]
+    `],
+  providers: [HeroService]
 })
 
 export class AppComponent {
+  constructor(private heroService: HeroService) {}
   title = 'Tour of Heroes';
-  heroes = HEROES;
+  heroes = this.heroService.getHeroes();
   selectedHero: Hero;
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
