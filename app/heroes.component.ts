@@ -12,7 +12,7 @@ import {HeroService} from './hero.service';
       <span class="badge">{{hero.id}}</span> {{hero.name}}
     </li>
   <ul>
-  <my-hero-detail [hero]="selectedHero"></my-hero-detail>
+  <my-hero-detail></my-hero-detail>
   `,
   styles: [`
     .selected {
@@ -68,14 +68,11 @@ import {HeroService} from './hero.service';
 export class HeroesComponent implements OnInit {
   constructor(private heroService: HeroService) {}
   ngOnInit(): void {
-    this.getHeroes();
+    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
   }
   title = 'Tour of Heroes';
   heroes: Hero[];
   selectedHero: Hero;
-  getHeroes(): void {
-    this.heroService.getHeroes().then(heroes => this.heroes = heroes);
-  }
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
   }
